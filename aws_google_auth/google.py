@@ -27,7 +27,6 @@ except ImportError:
     logging.info("Failed to import U2F libraries, U2F login unavailable. "
                  "Other methods can still continue.")
 
-
 class ExpectedGoogleException(Exception):
     def __init__(self, *args):
         super(ExpectedGoogleException, self).__init__(*args)
@@ -320,7 +319,6 @@ class Google:
         try:
             saml_element = parsed.find('input', {'name': 'SAMLResponse'}).get('value')
         except:
-
             if self.save_failure:
                 logging.error("SAML lookup failed, storing failure page to "
                               "'saml.html' to assist with debugging.")
