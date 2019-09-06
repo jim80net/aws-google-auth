@@ -27,6 +27,7 @@ class TestConfigurationPersistence(unittest.TestCase):
         self.c.duration = 1234
         self.c.idp_id = "sample_idp_id"
         self.c.role_arn = "arn:aws:iam::sample_arn"
+        self.c.provider_arn = "arn:aws:iam::sample_arn"
         self.c.sp_id = "sample_sp_id"
         self.c.u2f_disabled = False
         self.c.username = "sample_username"
@@ -47,6 +48,7 @@ class TestConfigurationPersistence(unittest.TestCase):
         self.assertTrue(self.config_parser.has_section(profile_string))
         self.assertEqual(self.config_parser[profile_string].get('google_config.google_idp_id'), self.c.idp_id)
         self.assertEqual(self.config_parser[profile_string].get('google_config.role_arn'), self.c.role_arn)
+        self.assertEqual(self.config_parser[profile_string].get('google_config.provider_arn'), self.c.provider_arn)
         self.assertEqual(self.config_parser[profile_string].get('google_config.google_sp_id'), self.c.sp_id)
         self.assertEqual(self.config_parser[profile_string].get('google_config.google_username'), self.c.username)
         self.assertEqual(self.config_parser[profile_string].get('region'), self.c.region)
@@ -78,6 +80,7 @@ class TestConfigurationPersistence(unittest.TestCase):
         self.assertEqual(test_configuration.profile, self.c.profile)
         self.assertEqual(test_configuration.idp_id, self.c.idp_id)
         self.assertEqual(test_configuration.role_arn, self.c.role_arn)
+        self.assertEqual(test_configuration.provider_arn, self.c.provider_arn)
         self.assertEqual(test_configuration.sp_id, self.c.sp_id)
         self.assertEqual(test_configuration.username, self.c.username)
         self.assertEqual(test_configuration.region, self.c.region)

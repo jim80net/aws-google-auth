@@ -28,6 +28,7 @@ class TestPythonFailOnVersion(unittest.TestCase):
         self.assertEqual(parser.profile, None)
         self.assertEqual(parser.region, None)
         self.assertEqual(parser.role_arn, None)
+        self.assertEqual(parser.provider_arn, None)
         self.assertEqual(parser.username, None)
         self.assertEqual(parser.quiet, False)
 
@@ -35,7 +36,7 @@ class TestPythonFailOnVersion(unittest.TestCase):
 
         # Assert the size of the parameter so that new parameters trigger a review of this function
         # and the appropriate defaults are added here to track backwards compatibility in the future.
-        self.assertEqual(len(vars(parser)), 16)
+        self.assertEqual(len(vars(parser)), 18)
 
     def test_username(self):
 
@@ -51,6 +52,7 @@ class TestPythonFailOnVersion(unittest.TestCase):
         self.assertEqual(parser.profile, None)
         self.assertEqual(parser.region, None)
         self.assertEqual(parser.role_arn, None)
+        self.assertEqual(parser.provider_arn, None)
         self.assertEqual(parser.username, 'username@gmail.com')
 
     def test_nocache(self):
@@ -67,6 +69,7 @@ class TestPythonFailOnVersion(unittest.TestCase):
         self.assertEqual(parser.profile, None)
         self.assertEqual(parser.region, None)
         self.assertEqual(parser.role_arn, None)
+        self.assertEqual(parser.provider_arn, None)
         self.assertEqual(parser.username, None)
 
     def test_resolvealiases(self):
@@ -83,6 +86,7 @@ class TestPythonFailOnVersion(unittest.TestCase):
         self.assertEqual(parser.profile, None)
         self.assertEqual(parser.region, None)
         self.assertEqual(parser.role_arn, None)
+        self.assertEqual(parser.provider_arn, None)
         self.assertEqual(parser.username, None)
 
     def test_ask_and_supply_role(self):

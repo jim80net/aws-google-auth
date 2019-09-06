@@ -170,6 +170,24 @@ class TestRoleProcessing(unittest.TestCase):
         config = resolve_config(args)
         self.assertEqual("4567-role", config.role_arn)
 
+class TestProviderProcessing(unittest.TestCase):
+
+    def test_default(self):
+        args = parse_args([])
+        config = resolve_config(args)
+        self.assertEqual(None, config.provider_arn)
+
+    def test_cli_param_supplied(self):
+        args = parse_args(['-P', "role1234"])
+        config = resolve_config(args)
+        self.assertEqual("role1234", config.provider_arn)
+
+    @mock.patch.dict(os.environ, {'AWS_PROVIDER_ARN': '4567-role'})
+    def test_with_environment(self):
+        args = parse_args([])
+        config = resolve_config(args)
+        self.assertEqual("4567-role", config.provider_arn)
+
 
 class TestAskRoleProcessing(unittest.TestCase):
 

@@ -29,6 +29,7 @@ class Configuration(object):
         self.profile = "sts"
         self.region = "ap-southeast-2"
         self.role_arn = None
+        self.provider_arn = None
         self.__saml_cache = None
         self.sp_id = None
         self.u2f_disabled = False
@@ -134,6 +135,11 @@ class Configuration(object):
             assert (self.role_arn.__class__ is str), "Expected role_arn to be None or a string. Got {}.".format(self.role_arn.__class__)
             assert ("arn:aws:iam::" in self.role_arn), "Expected role_arn to contain 'arn:aws:iam::'. Got '{}'.".format(self.role_arn)
 
+        # provider_arn (Can be blank, we'll just get it)
+        if self.provider_arn is not None:
+            assert (self.provider_arn.__class__ is str), "Expected provider_arn to be None or a string. Got {}.".format(self.provider_arn.__class__)
+            assert ("arn:aws:iam::" in self.provider_arn), "Expected provider_arn to contain 'arn:aws:iam::'. Got '{}'.".format(self.provider_arn)
+
         # u2f_disabled
         assert (self.u2f_disabled.__class__ is bool), "Expected u2f_disabled to be a boolean. Got {}.".format(self.u2f_disabled.__class__)
 
@@ -160,6 +166,7 @@ class Configuration(object):
         config_parser.set(profile, 'google_config.duration', self.duration)
         config_parser.set(profile, 'google_config.google_idp_id', self.idp_id)
         config_parser.set(profile, 'google_config.role_arn', self.role_arn)
+        config_parser.set(profile, 'google_config.provider_arn', self.provider_arn)
         config_parser.set(profile, 'google_config.google_sp_id', self.sp_id)
         config_parser.set(profile, 'google_config.u2f_disabled', self.u2f_disabled)
         config_parser.set(profile, 'google_config.google_username', self.username)
@@ -226,6 +233,10 @@ class Configuration(object):
             # Role ARN
             read_role_arn = unicode_to_string(config_parser[profile_string].get('google_config.role_arn', None))
             self.role_arn = coalesce(read_role_arn, self.role_arn)
+
+            # Provider ARN
+            read_provider_arn = unicode_to_string(config_parser[profile_string].get('google_config.provider_arn', None))
+            self.provider_arn = coalesce(read_provider_arn, self.provider_arn)
 
             # SP ID
             read_sp_id = unicode_to_string(config_parser[profile_string].get('google_config.google_sp_id', None))

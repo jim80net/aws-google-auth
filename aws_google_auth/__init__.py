@@ -36,6 +36,7 @@ def parse_args(args):
     parser.add_argument('--resolve-aliases', action='store_true', help='Resolve AWS account aliases.')
     parser.add_argument('--save-failure-html', action='store_true', help='Write HTML failure responses to file for troubleshooting.')
     parser.add_argument('--account-id', help='Limit the available roles by aws account id')
+    parser.add_argument('-P', '--provider-arn', help='The ARN of the provider granting the role. ADVANCED USE ONLY.')
 
     role_group = parser.add_mutually_exclusive_group()
     role_group.add_argument('-a', '--ask-role', action='store_true', help='Set true to always pick the role')
@@ -133,6 +134,12 @@ def resolve_config(args):
         args.role_arn,
         os.getenv('AWS_ROLE_ARN'),
         config.role_arn)
+
+    # PROVIDER ARN (Option priority = ARGS, ENV_VAR, DEFAULT)
+    config.provider_arn = coalesce(
+        args.provider_arn,
+        os.getenv('AWS_PROVIDER_ARN'),
+        config.provider_arn)
 
     # SP ID (Option priority = ARGS, ENV_VAR, DEFAULT)
     config.sp_id = coalesce(
@@ -248,14 +255,18 @@ def process_auth(args, config):
         roles = role_dict
 
     # Determine the provider and the role arn (if the the user provided isn't an option)
-    if config.role_arn in roles and not config.ask_role:
-        config.provider = roles[config.role_arn]
+    if config.provider_arn:
+        logging.info("Provider_arn specified: %s", config.provider_arn)
+        config.provider = config.provider_arn
     else:
-        if config.resolve_aliases:
-            aliases = amazon_client.resolve_aws_aliases(roles)
-            config.role_arn, config.provider = util.Util.pick_a_role(roles, aliases)
+        if config.role_arn in roles and not config.ask_role:
+            config.provider = roles[config.role_arn]
         else:
-            config.role_arn, config.provider = util.Util.pick_a_role(roles)
+            if config.resolve_aliases:
+                aliases = amazon_client.resolve_aws_aliases(roles)
+                config.role_arn, config.provider = util.Util.pick_a_role(roles, aliases)
+            else:
+                config.role_arn, config.provider = util.Util.pick_a_role(roles)
     if not config.quiet:
         print("Assuming " + config.role_arn)
         print("Credentials Expiration: " + format(amazon_client.expiration.astimezone(get_localzone())))
