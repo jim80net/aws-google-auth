@@ -234,6 +234,9 @@ def process_auth(args, config):
     # the rest of the workflow regardless of cache.
     amazon_client = amazon.Amazon(config, saml_xml)
     role_dict = amazon_client.roles
+    if role_dict == {}:
+        raise RuntimeError("Unable to fetch roles from Amazon")
+    logging.debug("Role Dictionary from Amazon: %s", role_dict)
 
     # if account_id is set, restrict roles to that account
     if config.account_id:

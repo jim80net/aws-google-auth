@@ -5,6 +5,8 @@ from __future__ import print_function
 import getpass
 import os
 import sys
+import logging
+
 from collections import OrderedDict
 
 from six.moves import input

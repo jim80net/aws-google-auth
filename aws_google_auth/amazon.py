@@ -3,6 +3,7 @@
 import base64
 import os
 import boto3
+import logging
 
 from datetime import datetime
 from threading import Thread
