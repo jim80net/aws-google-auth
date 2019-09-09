@@ -117,7 +117,7 @@ Usage
     usage: aws-google-auth [-h] [-u USERNAME] [-I IDP_ID] [-S SP_ID] [-R REGION]
                            [-d DURATION] [-p PROFILE] [-D] [-q] [--no-cache]
                            [--print-creds] [--resolve-aliases]
-                           [--save-failure-html] [-a | -r ROLE_ARN] [-k] [-V]
+                           [--save-failure-html] [-a | -r ROLE_ARN] [-P PROVIDER_ARN] [-k] [-V]
 
     Acquire temporary AWS credentials via Google SSO
 
@@ -146,7 +146,9 @@ Usage
       -a, --ask-role        Set true to always pick the role
       -r ROLE_ARN, --role-arn ROLE_ARN
                             The ARN of the role to assume
-      -k, --keyring         Use keyring for storing the password.
+      -P PROVIDER_ARN, --provider-arn PROVIDER
+                            The ARN of the provider to assume (WIP)
+      -k, --keyring         Use keyring for storin the password.
       -V, --version         show program's version number and exit
 
 
